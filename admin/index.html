@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>MobileShop - Administrator</title>
+        <link rel="icon" href="templates/joomlaCMS/favicon.ico" type="image/gif" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+        <meta http-equiv="Refresh" content="3600" >
+        
+        <style type="text/css">
+        
+        * { font-family:Arial; }
+h2 { padding:0 0 5px 5px; }
+h2 a { color: #224f99; }
+a { color:#999; text-decoration: none; }
+a:hover { color:#802727; }
+p { padding:0 0 5px 0; }
+
+input { padding:5px; border:1px solid #999; border-radius:4px; -moz-border-radius:4px; -web-kit-border-radius:4px; -khtml-border-radius:4px; }
+
+        </style>
+        
+        
+        <script type="text/javascript">
+        
+        $(function() {
+            var scntDiv = $('#p_scents');
+            var i = $('#p_scents p').size() + 1;
+            
+            $('#addScnt').live('click', function() {
+                    $('<p><label for="p_scnts"><input type="text" id="p_scnt" size="20" name="p_scnt_' + i +'" value="" placeholder="Input Value" /></label> <a href="#" id="remScnt">Remove</a></p>').appendTo(scntDiv);
+                    i++;
+                    return false;
+            });
+            
+            $('#remScnt').live('click', function() { 
+                    if( i > 2 ) {
+                            $(this).parents('p').remove();
+                            i--;
+                    }
+                    return false;
+            });
+    });
+            
+        </script>
+        <script src="https://togetherjs.com/togetherjs.js"></script>
+    </head>
+    <body id="minwidth-body">
+    
+    
+    
+
+<h2><a href="#" id="addScnt">Add Another Input Box</a></h2>
+
+<div id="p_scents">
+    <p>
+        <label for="p_scnts"><input type="text" id="p_scnt" size="20" name="p_scnt" value="" placeholder="Input Value" /></label>
+    </p>
+</div>
+
+
+
+        <div id="border-bottom"><div><div></div></div></div>
+        <div id="footer">
+            <p class="copyright">
+			Copyright © 2012 <a target="_black" href="../index.php">www.mobileshop.com</a>  All Rights Reserved.</p>
+			<div style="font-size:11px;color:#000000;text-align:center;">
+				<h3 id="r1">Lớp CN09A - Khoa Công Nghệ Thông Tin - Trường Đại học Giao Thông Vận Tải TpHCM</h3>
+				<script type="text/javascript">
+					var r1=document.getElementById("r1"); //get span to apply rainbow
+					var myRainbowSpan=new RainbowSpan(r1, 0, 360, 255, 50, 18); //apply static rainbow effect
+					myRainbowSpan.timer=window.setInterval("myRainbowSpan.moveRainbow()", myRainbowSpan.speed);
+				</script>
+			</div>
+        </div>
+    </body>
+</html>
+
