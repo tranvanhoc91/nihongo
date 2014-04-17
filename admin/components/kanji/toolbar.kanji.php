@@ -7,7 +7,7 @@
 				toolbarAdd();
 				break;
 			case 'edit':
-				if (Request::get('k_id')) toolbarAdd();
+				if (Request::get('id')) toolbarAdd();
 				else toolbarDefault();
 				break;
 			default:

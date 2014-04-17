@@ -88,16 +88,8 @@
         <div id="border-bottom"><div><div></div></div></div>
         <div id="footer">
             <p class="copyright">
-			Copyright © 2012 <a target="_black" href="../index.php">www.mobileshop.com</a>  All Rights Reserved.</p>
-			<!--<div style="font-size:11px;color:#000000;text-align:center;">
-				<h3 id="r1">Lớp CN09A - Khoa Công Nghệ Thông Tin - Trường Đại học Giao Thông Vận Tải TpHCM</h3>
-				<script type="text/javascript">
-					var r1=document.getElementById("r1"); //get span to apply rainbow
-					var myRainbowSpan=new RainbowSpan(r1, 0, 360, 255, 50, 18); //apply static rainbow effect
-					myRainbowSpan.timer=window.setInterval("myRainbowSpan.moveRainbow()", myRainbowSpan.speed);
-				</script>
-			</div>
-        --></div>
+			Copyright © 2012 <a target="_black" href="../index.php">www.minnanonihongo.com</a>  All Rights Reserved.</p>
+        </div>
     </body>
 </html>
 

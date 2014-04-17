@@ -17,7 +17,7 @@
 <script type="text/javascript" src="templates/joomlaCMS/js/checkall.selectbox.js"></script>
 
 <?php 
-$whitelist = array('listening','reading','grammar');
+$whitelist = array('listening','reading','grammar','kanji');
 
 $component = Request::get('option');
 

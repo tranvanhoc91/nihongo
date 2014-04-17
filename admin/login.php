@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Hệ thống siêu thị điện thoại di động-MobileShop - Login</title>
+	<title>ADMINISTRATOR PAGE - MINNANONIHONGO</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="templates/login/css/style.css" rel="stylesheet" type="text/css" />
 	<link rel="icon" href="templates/login/favico.ico" type="image/gif" />
@@ -24,7 +24,7 @@
 <!-- BEGIN: TOP -->
 	<div id="logo"></div>
 	<div id="slogan">
-		<h2 id="fly" style="color:#FFFFFF;font-size:22px;">HỆ THỐNG SIÊU THỊ ĐIỆN THOẠI DI ĐỘNG - MOBILESHOP</h2>
+		<h2 id="fly" style="color:#FFFFFF;font-size:22px;">ADMINISTRATOR PAGE - MINNANONIHONGO</h2>
 		<script language="javascript" src="templates/login/js/flyText.js"></script>
 	</div>
 <!-- END: TOP -->

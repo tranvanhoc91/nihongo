@@ -2,10 +2,13 @@
 	function t_display(){
 		global $task;
 		switch($task){
-			case 'edit':
 			case 'add':
 			case 'savex':
 				toolbarAdd();
+				break;
+		case 'edit':
+				if (Request::get('id')) toolbarAdd();
+				else toolbarDefault();
 				break;
 			default:
 				toolbarDefault();

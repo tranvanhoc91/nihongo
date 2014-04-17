@@ -40,15 +40,6 @@ class Upload {
 	        $this->fileSize = $fileInfo['size'];
 	        $this->fileExtension = $this->getFileExtension();
 	        $this->fileTMP = $fileInfo['tmp_name'];
-	        
-	        echo '</br>';
-	        echo '</br>';
-	        echo '</br>';
-	        echo '<pre>';
-	        var_dump($fileInfo);
-	        echo '</pre>';
-	        echo '</br>';
-	        echo '</br>';
         }
     }
     

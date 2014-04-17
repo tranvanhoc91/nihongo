@@ -222,3 +222,40 @@ div#Product_Manager,#Add_Product,#Edit_Product{
 	background: url(../images/header/icon-48-product.png) left 5px no-repeat;
 }
 
+
+div#Lesson_Manager,#Add_Lesson,#Edit_Lesson{
+	background: url(../images/header/icon-48-lesson.png) left 5px no-repeat;
+}
+
+
+
+
+
+div#Vocabulary_Manager,#Add_Vocabulary,#Edit_Vocabulary{
+	background: url(../images/header/icon-48-vocabulary.png) left 5px no-repeat;
+}
+
+
+div#Listening_Manager,#Add_Listening,#Edit_Listening{
+	background: url(../images/header/icon-48-listening.png) left 5px no-repeat;
+}
+
+div#Reading_Manager,#Add_Reading,#Edit_Reading{
+	background: url(../images/header/icon-48-article-add.png) left 5px no-repeat;
+}
+
+div#Grammar_Manager,#Add_Grammar,#Edit_Grammar{
+	background: url(../images/header/icon-48-grammar.png) left 5px no-repeat;
+}
+
+div#Kanji_Manager,#Add_Kanji,#Edit_Kanji{
+	background: url(../images/header/icon-48-kanji.png) left 5px no-repeat;
+}
+
+div#Test_Type_Manager,#Add_Type,#Edit_Type{
+	background: url(../images/header/icon-48-test.png) left 5px no-repeat;
+}
+
+div#Question_Manager,#Add_Question,#Edit_Question{
+	background: url(../images/header/icon-48-question.png) left 5px no-repeat;
+}

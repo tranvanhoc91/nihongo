@@ -31,7 +31,7 @@
 		$search = Request::get('search');
 		$lms = Request::get('limitstart',0);
 		$total = getCountRows($search);
-		$pageNav = new Pagination($total,$lms,10);
+		$pageNav = new Pagination($total,$lms,30);
 		$rows = getAllRows($search);
 		?>
 		<table class="toolbar-fitter" border="0" width="100%" cellpadding="0" cellspacing="0" id="product-table">
@@ -59,12 +59,12 @@
             </thead>
             <tbody>
             <?php 
-			$i = 1; foreach($rows AS $row) {
+			$h = 1; foreach($rows AS $row) {
 			?>
             	<tr>
-                	<td><?php echo $pageNav->getOfset($i);?></td>
+                	<td><?php echo $pageNav->getOfset($h);?></td>
                     <td><input id="actions-box" name="id[]" value="<?php echo $row->k_id; ?>"  type="checkbox"/></td>
-                    <td><a href=""><?php echo $row->k_kanji;?></a></td>
+                    <td><a style="font-size:32px;padding:5px 5px;" href=""><?php echo $row->k_kanji;?></a></td>
                     <td><?php 
                         $kunyomi = explode(";", $row->k_kunyomi);
                         for($i = 0; $i < count($kunyomi); $i++){
@@ -110,10 +110,10 @@
                         	//echo '</tr></table>';
                         }
                     ?></td>
-                    <td><?php $note = splitText($row->k_remember, 60, 60); echo $note; ?></td>
+                    <td><?php $note = splitText($row->k_remember, 60, 60); echo " ". $note; ?></td>
                     <td nowrap="nowrap" style="color:gray;"><?php echo $row->k_id;?></td>
               	</tr>
-             <?php $i++; } ?>
+             <?php $h++; } ?>
 	            <tr>
 					<td style="border:none !important;" colspan="12"><?php $pageNav->displayCpanel();?></td>
 				</tr>
@@ -186,10 +186,11 @@
 			</tr>
 			
 			<tr>
-				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Remembert</p></td>
-				<td><textarea name="k_remember" rows="7" cols="45">
-				<?php if($record) echo $record->k_remember;?>
-				</textarea><br></td>
+				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Remember</p></td>
+				<td>
+				<textarea cols="60" id="editor3" name="k_remember" rows="10"><?php if ($record) echo $record->k_remember; ?></textarea>
+				<script type="text/javascript">CKEDITOR.replace('editor3');</script>
+				</td>
 			</tr>
 			
 			</tbody></table>
@@ -218,19 +219,30 @@
 	    global $task;
 	    
 	    
-	    $kanji = trim(Request::get('k_kanji'));
-	    $mean_kanji = trim(Request::get('k_mean_kanji'));
-	    //$mean_en = trim(Request::get('k_mean_en'));
-	    $mean_vi = trim(Request::get('k_mean_vi'));
-	    if (!$kanji || !$mean_kanji || !$mean_vi){
-			    Message::setMessage('Please enter full',1);
-		    }else {
+	    $kanji = Request::get('k_kanji');
+	    $mean_kanji = Request::get('k_mean_kanji');
+	    $mean_en = trim(Request::get('k_mean_en'));
+	    $mean_vi = Request::get('k_mean_vi');
+	    $mean_vi = Request::get('k_mean_vi');
+	    $remember =   Request::get('k_remember');
+	   // if (!$kanji || !$mean_kanji || !$mean_vi){
+			    //Message::setMessage('Please enter full',1);
+		//}else {
 		        if(!$excute->store()){
 		    	    Message::setMessage('False',1);
 		        }else{
 		    	     Message::setMessage('Saved',0);
 		        }
-		 }
+		 //}
+		 
+		 ///--> insert data
+	  /*      if(!$excute->store()){
+		    	    Message::setMessage('False',1);
+		        }else{
+		    	     Message::setMessage('Saved',0);
+		        }*/
+		        
+		        
 		switch($task){
 			case 'save':
 				redirect('index.php?option=kanji');
@@ -350,7 +362,7 @@
 	 */
 	function getAllRows($searchText=''){
 		global $dbo; 
-		$lm = Request::get('limit',10);
+		$lm = Request::get('limit',30);
 		$lms = Request::get('limitstart',0);
 		$query = "SELECT k_id,k_kanji,k_mean_kanji, k_mean_en, k_mean_vi, k_onyomi, k_kunyomi, k_on_ex, k_kun_ex, k_remember FROM kanji ";
 		if ($searchText){
@@ -361,7 +373,7 @@
 			            OR `k_remember` LIKE '%$searchText%' 
 			             )"; 
 		}
-		$query .= " ORDER BY k_id ASC LIMIT $lms,$lm ";
+		$query .= " ORDER BY k_id DESC LIMIT $lms,$lm ";
 	    $dbo->setQuery($query);
 		return $dbo->loadObjectList();
 	}

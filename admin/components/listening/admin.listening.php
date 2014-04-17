@@ -52,9 +52,8 @@
                     <th width="10" ><input type="checkbox" value="on" name="allbox" onclick="checkAll();"/></th>
                     <th nowrap="nowrap">Title</th>
                     <th nowrap="nowrap">Track</th>
-                    <th nowrap="nowrap">Content jp</th>
-                    <th nowrap="nowrap">Content en</th>
-                    <th nowrap="nowrap">Content vi</th>
+                    <th nowrap="nowrap">Thumbnail</th>
+                    
                     <th nowrap="nowrap">Lesson</th>
                     <th nowrap="nowrap" width="1">ID</th>
                	</tr>
@@ -72,9 +71,14 @@
                     <source src="horse.ogg" type="audio/ogg">
                     <source src="audio/kaiwa/<?php echo $row->li_track; ?>" type="audio/mpeg"></audio>
                     </td>
-			        <td><?php echo splitText($row->li_script_jp, 70, 70); // echo $row->li_script_jp;?>...</td>
-			        <td style="text-align:justify;"><?php echo splitText($row->li_script_en, 70, 70);?>...</td>
-			        <td style="text-align:justify;"><?php echo splitText($row->li_script_vi, 70, 70);?>...</td>
+                    <td><center>
+                  <?php 
+                    if($row->li_thumb) {
+                    	echo '<img class="" src="audio/thumbs/'.$row->li_thumb.'"height="140" width="160" />';  }
+                    else { ?>
+                    	<img class="" src="images/noimages.jpg" height="140" width="160" /><?php } ?>
+                    </center></td>
+			        
                     <td><?php echo getLessons($row->li_lesson_id); ?></td>
                     <td nowrap="nowrap" style="color:gray;"><?php echo $row->li_id;?></td>
               	</tr>
@@ -120,6 +124,8 @@
                     <source src="horse.ogg" type="audio/ogg">
                     <source src="audio/kaiwa/<?php echo $record->li_track;?>" type="audio/mpeg">
                     </audio>
+                    <input type="hidden" name="li_track" value="<?php echo $record->li_track; ?>" />
+                    
                     <input type="file" id="inputFile" name="li_track" accept="audio/*" />
                     <a id="audioTask" class="change" href="#" onclick="audioTask();" >Change audio</a>
                     <script type="text/javascript">
@@ -143,6 +149,43 @@
                     </script>
 				<?php } else {?>
 				    <input type="file" id="file" name="li_track" accept="audio/*" />
+				<?php } ?>
+				</td>
+			</tr>
+			
+			<tr>
+				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Thumb</p></td>
+				<td>
+				<?php if ($record) { 
+				    if ($record->li_thumb != '') $link = "audio/thumbs/$record->li_thumb" ;
+					else $link = 'images/noimages.jpg'; 
+				?>
+					<img class="showThumb" src="<?php echo $link; ?>" height="250" width="250" />
+					<input type="hidden" name="li_thumb" value="<?php echo $record->li_thumb; ?>" />
+					
+                    <input type="file" id="thumbnail" name="li_thumb" accept="image/jpeg,image/gif,image/png,image/jpg" /> 
+                    <a id="thumbTask" class="change" href="#"  >Change thumb</a>
+                    <script type="text/javascript">
+                    var task = $("#thumbTask");
+                    var inputThumbnail =  $("#thumbnail");
+                    var showThumb = $(".showThumb");
+                    inputThumbnail.hide();
+                    task.click(function(){
+                    	if(task.attr("class") == "change"){
+                        	showThumb.hide();
+                        	inputThumbnail.show();
+                        	task.text("Cancel");
+                        	task.attr("class","cancel");
+                        }else{
+                        	showThumb.show();
+                        	inputThumbnail.hide();
+                        	task.text("Change");
+                        	task.attr("class","change");
+                        }
+                    });
+                    </script>
+				<?php } else { ?>
+				    <input type="file" name="li_thumb" accept="image/jpeg,image/gif,image/png,image/jpg"  /> 
 				<?php } ?>
 				</td>
 			</tr>
@@ -182,52 +225,78 @@
 	<div class="clr"></div>
 	<?php
 	}
+	
+	
+	
 //Cac function process
 	function save(){
-		$excute = includeTable();
+		global $dbo;
+		$excute  = includeTable();
 		$excute->bind();
-	    global $task;
-	    
-		$title = trim(Request::get('li_title'));
-		$content_jp = trim(Request::get('li_script_jp'));
-		$lessonId = trim(Request::get('li_lesson_id'));
-		$audioFile = $_FILES["li_track"]; //object
-		$dir = "audio/kaiwa/";
+		$title = Request::get('li_title');
+		$content_jp = Request::get('li_script_jp');
+		$lessonId = Request::get('li_lesson_id');
+		$id = Request::get('li_id');
 		
-		if (!$title || !$content_jp || !$lessonId || !$audioFile['name']){
-			 Message::setMessage('Please enter full',1);
-		}else {
-			//store audio
-			$prefixName = "Dai ".$lessonId.' ka_';
-			$fileNameUploaded = UploadFile("li_track",$dir,1,$prefixName);
-			echo $fileNameUploaded;
-			if ($fileNameUploaded){
-			     $excute->li_track = $fileNameUploaded;
-				 	//Kiem tra xem: user dang add hay edit bai viet
-				 	//Neu laf edit thi phai lay ve id cua bai viet va cap nhat lai ten hinh anh
-				 	$id = Request::get('li_id');
-				 	if ($id){ //tuc la dang edit hinh anh
-				 		//lay ve hinh hien tai va thay the bang hinh moi
-				 		global $dbo;
-						$dbo->setQuery("SELECT `li_track` FROM `listening` WHERE `li_id` = $id ");
-						$audioCurrent = $dbo->loadObject();
-						if ($audioCurrent->li_track)
-							unlink($dir.$audioCurrent->li_track);
-				 	}
-				 if ($excute->store()) Message::setMessage('Saved');
-			     else Message::setMessage('False',1);
-			}
+		
+		//--> xu ly luu thumb
+		$fieldImageName = 'li_thumb';
+		$imageInfo = $_FILES[$fieldImageName];		
+		$dirImage = 'audio/thumbs/';
+		//thay the ten image = ten cua title
+	    if ($imageInfo['name']){
+	    	$prefixImg = 'dai '.$lessonId .' ka_'  ;
+			$newImageName = UploadFile($fieldImageName,$dirImage,1,$prefixImg); //function UploadFile() cat dat trong file required
+	        if ($newImageName){
+			 	$excute->li_thumb = $newImageName;
+			 	//Kiem tra xem: user dang add hay edit
+			 	//Neu laf edit thi phai lay ve id cua bai viet va cap nhat lai ten hinh anh
+			 	if ($id){ //tuc la dang edit hinh anh
+			 		//lay ve hinh hien tai va thay the bang hinh moi
+					$dbo->setQuery("SELECT `li_thumb` FROM `listening` WHERE `li_id` = $id ");
+					$imgcurr = $dbo->loadObject();
+					if ($imgcurr && $imgcurr->li_thumb) unlink($dirImage.$imgcurr->li_thumb);
+			 	}
+			 }
 		}
 		
-	switch($task){
+		//-->xu ly luu audio
+		$fieldAudioName = 'li_track';
+		$audioInfo = $_FILES[$fieldAudioName];	
+		$dirAudio = "audio/kaiwa/";
+		///thay the ten audio = ten cua title
+	    if ($audioInfo['name']){
+	    	$prefixAudio = 'dai '.$lessonId .' ka_'  ;
+			$newAudioName = UploadFile($fieldAudioName,$dirAudio,1,$prefixAudio); //function UploadFile() cat dat trong file required
+	        if ($newAudioName){
+			 	$excute->li_track = $newAudioName;
+			 	//Kiem tra xem: user dang add hay edit
+			 	//Neu laf edit thi phai lay ve id cua bai viet va cap nhat lai ten hinh anh
+			 	if ($id){ //tuc la dang edit hinh anh
+			 		//lay ve hinh hien tai va thay the bang hinh moi
+					$dbo->setQuery("SELECT `li_track` FROM `listening` WHERE `li_id` = $id ");
+					$audioCurrent = $dbo->loadObject();
+						if ($audioCurrent && $audioCurrent->li_track)
+							unlink($dirAudio.$audioCurrent->li_track);
+			 	}
+			 }
+		}
+		
+		if ($excute->store()) Message::setMessage('Saved');
+	    else Message::setMessage('False',1);
+		
+		global $task;
+		switch($task){
 			case 'save':
 				redirect('index.php?option=listening');
 				break;
 			case 'savex':
 				redirect('index.php?option=listening&task=add');
 				break;
-		}
+		}	
 	}
+	
+	
 	function setError($msg){
 		$errors[] = $msg;
 		return $errors;
@@ -357,7 +426,7 @@
 		$lm = Request::get('limit',20);
 		$lms = Request::get('limitstart',0);
 		
-	    $query = "SELECT  `li_id`,`li_lesson_id`,`li_title`,`li_script_jp`,`li_script_en`,`li_script_vi`,`li_track`
+	    $query = "SELECT  `li_id`,`li_lesson_id`,`li_title`,`li_thumb`,`li_script_jp`,`li_script_en`,`li_script_vi`,`li_track`
 	              FROM listening ";
 		
 	    $where = array();

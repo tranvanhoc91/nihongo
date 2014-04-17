@@ -51,9 +51,6 @@
                		<th width="10">STT</th>
                     <th width="10" ><input type="checkbox" value="on" name="allbox" onclick="checkAll();"/></th>
                     <th nowrap="nowrap">Title</th>
-                    <th nowrap="nowrap">Content jp</th>
-                    <th nowrap="nowrap">Content en</th>
-                    <th nowrap="nowrap">Content vi</th>
                     <th nowrap="nowrap">Lesson</th>
                     <th nowrap="nowrap" width="1">ID</th>
                	</tr>
@@ -66,9 +63,6 @@
                 	<td><?php echo $pageNav->getOfset($i);?></td>
                     <td><input id="actions-box" name="id[]" value="<?php echo $row->r_id; ?>"  type="checkbox"/></td>
                     <td><a href=""><?php echo $row->r_title;?></a></td>
-			        <td><?php echo splitText($row->r_content_jp, 70, 70); // echo $row->li_script_jp;?>...</td>
-			        <td style="text-align:justify;"><?php echo splitText($row->r_content_en, 70, 70);?>...</td>
-			        <td style="text-align:justify;"><?php echo splitText($row->r_content_vi, 70, 70);?>...</td>
                     <td><?php echo getLessons($row->r_lesson_id); ?></td>
                     <td nowrap="nowrap" style="color:gray;"><?php echo $row->r_id;?></td>
               	</tr>
@@ -116,17 +110,18 @@
 			<tr>
 				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Content vi</p></td>
 				<td>
-				<textarea cols="60" id="editor4" name="r_content_en" rows="10"><?php if ($record) echo $record->r_content_en; ?></textarea>
-				<script type="text/javascript">CKEDITOR.replace('editor4');</script>
+				<textarea cols="60" id="editor3" name="r_content_vi" rows="10"><?php if ($record) echo $record->r_content_vi; ?></textarea>
+				<script type="text/javascript">CKEDITOR.replace('editor3');</script>
 				</td>
 			</tr>
 			<tr>
 				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Content en</p></td>
 				<td>
-				<textarea cols="60" id="editor3" name="r_content_vi" rows="10"><?php if ($record) echo $record->r_content_vi; ?></textarea>
-				<script type="text/javascript">CKEDITOR.replace('editor3');</script>
+				<textarea cols="60" id="editor4" name="r_content_en" rows="10"><?php if ($record) echo $record->r_content_en; ?></textarea>
+				<script type="text/javascript">CKEDITOR.replace('editor4');</script>
 				</td>
 			</tr>
+			
 			</tbody></table>
 	</td></tr></tbody></table>
 	<div class="clr"></div>
@@ -225,9 +220,9 @@
 	 * Get lesson by lesson id
 	 * @param $lessionId
 	 */
-	function getLessons($lessionId){
+	function getLessons($lessonId){
 		global $dbo;
-		$dbo->setQuery("SELECT le_title FROM lesson WHERE le_id = '$lessionId' ");
+		$dbo->setQuery("SELECT le_title FROM lesson WHERE le_id = '$lessonId' ");
 		$row = $dbo->loadObjectList();
 		foreach ($row AS $r)
 			return $r->le_title;

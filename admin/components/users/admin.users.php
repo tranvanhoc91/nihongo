@@ -412,17 +412,28 @@
 	
 	
 	function edit(){
-		$user = includeTable();
+	    $excute = includeTable();
 		$id = Request::get('id');
-		$user->load($id[0]);
-		viewAdd($user);	
+		if (count($id) > 0){
+			$excute->load($id[0]);
+		    viewAdd($excute);	
+		}else {
+			Message::setMessage('Please select item to edit',1);
+			redirect('index.php?option=users');
+		}
 	}
 	
 	function delete(){
+		global $dbo;
 		$id = Request::get('id');
-		$user = includeTable();
-		$user->delete($id);
-		viewDefault();	
+		if (!$id){
+			Message::setMessage('Please select item to delete',1);
+		}else {
+			$excute = includeTable();
+		    $excute->delete($id);
+		    Message::setMessage(count($id).' Item(s) permanently deleted');
+		}
+		redirect('index.php?option=users');
 	}
 	
 	function updateUserBlock($task){

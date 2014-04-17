@@ -108,12 +108,17 @@
 			
 			<tr>
 				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Word</p></td>
+				<td><input style="height:30px;" value="<?php if($record) echo $record->v_hiragana;?>" type="search" size="60" name="v_hiragana" /><br></td>
+			</tr>
+			
+			<tr>
+				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Kanji</p></td>
 				<td><input style="height:30px;" value="<?php if($record) echo $record->v_word;?>" type="search" size="60" name="v_word" /><br></td>
 			</tr>
 			
 			<tr>
-				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Hiragana</p></td>
-				<td><input style="height:30px;" value="<?php if($record) echo $record->v_hiragana;?>" type="search" size="60" name="v_hiragana" /><br></td>
+				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Mean Vi</p></td>
+				<td><input style="height:30px;" value="<?php if($record) echo $record->v_mean_vi;?>" type="search" size="60" name="v_mean_vi" /><br></td>
 			</tr>
 			
 			<tr>
@@ -124,11 +129,6 @@
 			<tr>
 				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Mean En</p></td>
 				<td><input style="height:30px;" value="<?php if($record) echo $record->v_mean_en;?>" type="search" size="60" name="v_mean_en" /><br></td>
-			</tr>
-			
-			<tr>
-				<td><p style="text-indent:20px;font-size:18px;font-family:Times New Roman, Times, serif;">Mean Vi</p></td>
-				<td><input style="height:30px;" value="<?php if($record) echo $record->v_mean_vi;?>" type="search" size="60" name="v_mean_vi" /><br></td>
 			</tr>
 			
 			<tr>
@@ -165,8 +165,9 @@
 		$mean_kanji = trim(Request::get('v_mean_kanji'));
 		$mean_en = trim(Request::get('v_mean_en'));
 		$mean_vi = trim(Request::get('v_mean_vi'));
+		$v_hiragana = trim(Request::get('v_hiragana'));
 		
-	    if (!$word || !$mean_vi){
+	    if (!$v_hiragana || !$mean_vi){
 			    Message::setMessage('Please enter full',1);
 		    }else {
 		        if(!$excute->store()){

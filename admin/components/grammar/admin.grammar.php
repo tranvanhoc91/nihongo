@@ -52,7 +52,6 @@
                     <th width="10" ><input type="checkbox" value="on" name="allbox" onclick="checkAll();"/></th>
                     <th nowrap="nowrap">Title</th>
                     <th nowrap="nowrap">Mean</th>
-                    <th nowrap="nowrap">Explain</th>
                     <th nowrap="nowrap">Lesson</th>
                     <th nowrap="nowrap" width="1">ID</th>
                	</tr>
@@ -64,9 +63,8 @@
             	<tr>
                 	<td><?php echo $pageNav->getOfset($i);?></td>
                     <td><input id="actions-box" name="id[]" value="<?php echo $row->g_id; ?>"  type="checkbox"/></td>
-                    <td><a href=""><?php echo $row->g_title;?></a></td>
-                    <td><?php echo splitText($row->g_mean, 60, 60);?></td>
-                    <td><?php echo splitText($row->g_explain, 60, 60);?>...</td>
+                    <td><span style="" ><?php echo $row->g_title;?></span></td>
+                    <td><?php splitText($row->g_mean,100,80)?></td>
                     <td><?php echo getLessons($row->g_lesson_id); ?></td>
                     <td nowrap="nowrap" style="color:gray;"><?php echo $row->g_id;?></td>
               	</tr>
@@ -450,7 +448,7 @@
 			$w = implode(' AND ', $where);
 			$query .= " WHERE ".$w;
 		}
-		$query .= " ORDER BY g_id ASC LIMIT $lms,$lm ";
+		$query .= " ORDER BY g_lesson_id ASC LIMIT $lms,$lm ";
 	    $dbo->setQuery($query);
 		return $dbo->loadObjectList();
 	}

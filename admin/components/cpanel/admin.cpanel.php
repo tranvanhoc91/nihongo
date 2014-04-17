@@ -31,27 +31,46 @@
 		return $dbo->loadObjectList();
 	} 
     
-    function getPopularArticle(){
+	
+	/**
+	 * 
+	 * Enter description here ...
+	 * @param $limit
+	 */
+    function getLastListening($limit=5){
         global $dbo;
-        $dbo->setQuery("SELECT articles.id,articles.title as atitle,categories.title ctitle,hits,
-								DATE_FORMAT(created ,' %d.%m.%Y <span>%H:%i</span> ' ) as created
-								FROM articles 
-                                INNER JOIN categories 
-                                ON categories.id = articles.category_id
-								WHERE trash = 0
-								ORDER BY hits DESC 
-								LIMIT 5 ");
+        $dbo->setQuery("SELECT li_id,`li_title`,le_title
+								FROM listening 
+                                INNER JOIN lesson 
+                                ON listening.li_lesson_id = lesson.le_id
+                                ORDER BY li_id DESC 
+								LIMIT  ".$limit);
 		return $dbo->loadObjectList();
     }
     
-    function getPopularProduct(){
+    /**
+     * 
+     * Enter description here ...
+     * @param $limit
+     */
+    function getLastReading($limit=5){
         global $dbo;
-        $dbo->setQuery("SELECT title,price,quantity,name
-								FROM products 
-                                INNER JOIN manufacturer 
-                                ON manufacturer.id = products.manufacturer_id
-								WHERE trash = 0 AND published = 1
-								LIMIT 5 ");
+        $dbo->setQuery("SELECT `r_id`,`r_lesson_id`,`r_title`,le_title
+								FROM reading 
+                                INNER JOIN lesson 
+                                ON reading.r_lesson_id = lesson.le_id
+                                ORDER BY r_id DESC 
+								LIMIT  ".$limit);
+		return $dbo->loadObjectList();
+    }
+    
+    
+    function getLastKanji($limit=5){
+        global $dbo;
+        $dbo->setQuery("SELECT `k_id`, k_kanji,k_mean_kanji, k_mean_en, k_mean_vi
+								FROM kanji 
+                                ORDER BY k_id DESC 
+								LIMIT  ".$limit);
 		return $dbo->loadObjectList();
     }
 ?>

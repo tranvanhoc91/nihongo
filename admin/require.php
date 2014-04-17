@@ -50,7 +50,6 @@ function UploadFile($fileName,$dir,$rename,$prefix=""){
 	    $upload->setFileExtension('jpg|gif|bmw|jpeg|png|audio|mp3|wva');
 	    $upload->setFileSize(50000000);
 	    $upload->setUploadDir($dir);
-	    
 	    if($upload->CheckError() == true){
 	    	$upload_errors = $upload->errors;
 	        foreach($upload_errors as $error){
@@ -59,24 +58,54 @@ function UploadFile($fileName,$dir,$rename,$prefix=""){
 	    }
 	    else{
 	      	if($rename==0){    //khong cho phep doi ten
-		        $source = $upload->fileTMP;
-		        $des = $upload->uploadDir . $upload->fileName;
+	            $source = $upload->fileTMP;
+	            $des = $upload->uploadDir.$upload->fileName;;
 	        }else{    //$rename == true.   tuc la cho phep doi ten file upload len
 	        	//$upload->newfileName = $prefix . time() . '.' . $upload->fileExtension;
 	        	$upload->newfileName = $prefix.$upload->fileName;
 	            $source = $upload->fileTMP;
 	            $des = $upload->uploadDir.$upload->newfileName;
 	        }
-	        
 	        move_uploaded_file($source, $des);
-	         //echo 'source ---------'. $source.'<br><br><br>';
-	        // echo 'des ---------'. $des.'<br><br><br>';
-	        
-	        //move_uploaded_file($source, $des);
 	    }
 	    return $upload->newfileName;
-	}
+}
 	
+/**
+ * 
+ * upload doi ten file = =ten file moi dc chi dinh
+ * @param unknown_type $fileName
+ * @param unknown_type $dir
+ * @param unknown_type $rename
+ * @param unknown_type $prefix
+ */
+/*function UploadFile($fileName,$dir,$replaceFullInt,$titleFile,$prefix=""){
+		$upload = new Upload ($fileName);
+	    $upload->setFileExtension('jpg|gif|bmw|jpeg|png|audio|mp3|wva');
+	    $upload->setFileSize(50000000);
+	    $upload->setUploadDir($dir);
+	    if($upload->CheckError() == true){
+	    	$upload_errors = $upload->errors;
+	        foreach($upload_errors as $error){
+	        	Message::setMessage($error,1);
+	        }
+	    }else{
+	    	if ($replaceFullInt == 1){ //thay the hoan toan ten file cu = ten moi ($titleFile)
+	    		$upload->newfileName = $titleFile;
+	            $source = $upload->fileTMP;
+	            $des = $upload->uploadDir.$upload->newfileName;
+	    	}else { //ten file moi = $titleFile + prefix(neuco) + ten file cu
+	    		$upload->newfileName = $titleFile.$prefix.$upload->fileName;
+	            $source = $upload->fileTMP;
+	            $des = $upload->uploadDir.$upload->newfileName;
+	    	}
+	        move_uploaded_file($source, $des);
+	    }
+	    return $upload->newfileName;
+}
+*/
+
+
 
 
 	/**
@@ -84,13 +113,20 @@ function UploadFile($fileName,$dir,$rename,$prefix=""){
 	 * Cat chuoi dai thanh 1 doan 
 	 * @param $string
 	 * @param $maxChar : do dai toi da
-	 * @param $numChar
+	 * @param $numChar : do dai can cat
 	 */
 	function splitText($string,$maxChar, $numChar){
-		if (strlen($string) > $maxChar){
-			$string = preg_replace('/\s*[^\s]+$ /', '...', substr($string, 0, $numChar)); 
+		/*if (strlen($string) > $maxChar){
+			$subString = preg_replace('/\s*[^\s]+$ /', '...', substr($string, 0, $numChar));
+
+			//$subString = substr($string, 0, 100);
 		}
-		return $string;
+		return $subString;*/
+		
+        if (strlen($string) > 150)
+            echo preg_replace('/\s*[^\s]+$/', '...', substr($string, 0, $numChar));
+        else 
+            echo $string;
 	}
 	
 function convertString($str) {
